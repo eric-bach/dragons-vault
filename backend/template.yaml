@@ -90,11 +90,68 @@ Resources:
           Integration:
             DataSourceName: !GetAtt CommentsDataSource.Name
 
+  QuestionsNamespace:
+    Type: AWS::AppSync::ChannelNamespace
+    Properties:
+      ApiId: !GetAtt EventsApi.ApiId
+      Name: questions
+      CodeHandlers: |
+        import * as ddb from '@aws-appsync/utils/dynamodb'
+        import { util } from '@aws-appsync/utils'
+
+        const TABLE = 'dragons-vault-events'
+
+        export const onPublish = {
+          request(ctx) {
+            const channel = ctx.info.channel.path
+            return ddb.batchPut({
+              tables: {
+                [TABLE]: ctx.events.map(({id, payload}) => {
+                  const data = payload?.data || {}
+                  const item = {
+                    id,
+                    channel,
+                    timestamp: data.timestamp || util.time.nowISO8601(),
+                    ...payload
+                  }
+                  
+                  // Only add fields if they exist
+                  if (data.uuid) item.userid = data.uuid
+                  if (data.username) item.username = data.username
+                  if (data.questionType) item.questionType = data.questionType
+                  if (data.answer !== undefined) item.answer = data.answer
+                  
+                  return item
+                }),
+              },
+            })
+          },
+          response(ctx) {
+            return ctx.result.data[TABLE].map(({ id, ...payload }) => ({ id, payload }))
+          },
+        }
+      HandlerConfigs:
+        OnPublish:
+          Behavior: CODE
+          Integration:
+            DataSourceName: !GetAtt QuestionsDataSource.Name
+
   CommentsDataSource:
     Type: AWS::AppSync::DataSource
     Properties:
       ApiId: !GetAtt EventsApi.ApiId
       Name: CommentsDynamoDB
+      Type: AMAZON_DYNAMODB
+      ServiceRoleArn: !GetAtt AppSyncDynamoDBRole.Arn
+      DynamoDBConfig:
+        TableName: !Ref EventsTable
+        AwsRegion: !Ref AWS::Region
+
+  QuestionsDataSource:
+    Type: AWS::AppSync::DataSource
+    Properties:
+      ApiId: !GetAtt EventsApi.ApiId
+      Name: QuestionsDynamoDB
       Type: AMAZON_DYNAMODB
       ServiceRoleArn: !GetAtt AppSyncDynamoDBRole.Arn
       DynamoDBConfig:
@@ -119,7 +176,8 @@ Resources:
               - Effect: Allow
                 Action:
                   - dynamodb:BatchWriteItem
-                Resource: !GetAtt EventsTable.Arn
+                Resource:
+                  - !GetAtt EventsTable.Arn
 
   DragonsVaultApiKey:
     Type: AWS::AppSync::ApiKey
