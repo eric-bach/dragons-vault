@@ -262,7 +262,7 @@ export default function LeaderboardPage() {
         <div className='text-center'>
           <h2 className='text-2xl font-semibold text-gray-900 mb-4'>Join the Conversation</h2>
           <div className='bg-white p-6 rounded-lg shadow-lg inline-block'>
-            <Image src='/code.png' alt='QR Code to join' width={200} height={200} className='mx-auto' />
+            <Image src='/code-feedback.png' alt='QR Code to join' width={200} height={200} className='mx-auto' />
             <p className='mt-4 text-sm text-gray-600'>Scan to start contributing</p>
           </div>
         </div>
