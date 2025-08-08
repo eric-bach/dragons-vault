@@ -138,7 +138,7 @@ export default function LeaderboardPage() {
           </div>
         )}
 
-        <h1 className='text-3xl font-bold text-center mt-4 text-gray-900 mb-4'>Welcome to Dragon&apos;s Vault</h1>
+        <h1 className='text-3xl font-bold text-center mt-4 text-gray-900 mb-4'>Welcome Transformation Team!</h1>
 
         {/* Azure DevOps Statistics */}
         {azureStatsData.total > 0 && (
