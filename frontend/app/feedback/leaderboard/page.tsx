@@ -74,30 +74,6 @@ export default function LeaderboardPage() {
     return { total, wouldUseTaskGenie, wouldNotUseTaskGenie, taskGeniePercentage };
   };
 
-  // Get unique users with their latest responses
-  const getUniqueUserResponses = () => {
-    const userMap = new Map<string, { username: string; azureDevOps: boolean | null; taskGenie: boolean | null }>();
-
-    questionResponses.forEach((response) => {
-      const existing = userMap.get(response.uuid);
-      if (existing) {
-        if (response.questionType === 'azure-devops') {
-          existing.azureDevOps = response.answer;
-        } else if (response.questionType === 'task-genie') {
-          existing.taskGenie = response.answer;
-        }
-      } else {
-        userMap.set(response.uuid, {
-          username: response.username,
-          azureDevOps: response.questionType === 'azure-devops' ? response.answer : null,
-          taskGenie: response.questionType === 'task-genie' ? response.answer : null,
-        });
-      }
-    });
-
-    return Array.from(userMap.values());
-  };
-
   useEffect(() => {
     async function handleQuestionsConnect() {
       return (await events.connect('/questions/channel')).subscribe({
@@ -147,7 +123,6 @@ export default function LeaderboardPage() {
 
   const azureStatsData = azureStats();
   const taskGenieStatsData = taskGenieStats();
-  const uniqueUserResponses = getUniqueUserResponses();
 
   return (
     <div className='min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8'>
