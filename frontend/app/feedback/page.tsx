@@ -11,6 +11,11 @@ export default function FeedbackPage() {
   const [isLoading, setIsLoading] = useState(false);
 
   const validateUsername = (value: string) => {
+    if (value.length < 3) {
+      setError('Username must be at least 3 characters');
+      return false;
+    }
+
     if (value.length > 16) {
       setError('Username must be 16 characters or less');
       return false;
@@ -46,7 +51,7 @@ export default function FeedbackPage() {
       localStorage.setItem('userId', userId);
       localStorage.setItem('username', username);
 
-      // Navigate to Azure DevOps question page
+      // Navigate to question page
       router.push('/feedback/question/1');
       setIsLoading(false);
     }
@@ -56,7 +61,8 @@ export default function FeedbackPage() {
     <div className='min-h-screen bg-gradient-to-b from-gray-50 to-gray-100 py-12 px-4 sm:px-6 lg:px-8'>
       <div className='max-w-md mx-auto'>
         <div className='bg-white rounded-lg shadow-xl p-8'>
-          <h1 className='text-3xl font-bold text-center text-gray-900 mb-8'>Enter the Dragon&apos;s Vault</h1>
+          <h1 className='text-3xl font-bold text-center text-gray-900 mb-2'>Task Genie</h1>
+          <p className='text-md text-center text-gray-900 mb-8'>Join the conversation</p>
 
           <form onSubmit={handleSubmit} className='space-y-6'>
             <div className='space-y-2'>
@@ -69,13 +75,13 @@ export default function FeedbackPage() {
                 placeholder='Enter your name'
                 value={username}
                 onChange={handleUsernameChange}
+                minLength={3}
                 maxLength={16}
                 required
                 disabled={isLoading}
                 className={`w-full ${error ? 'border-red-500' : ''}`}
               />
               {error && <p className='mt-1 text-sm text-red-600'>{error}</p>}
-              <p className='mt-1 text-sm text-gray-500'>Letters and numbers only, maximum 16 characters</p>
             </div>
 
             <button

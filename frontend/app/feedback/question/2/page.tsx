@@ -68,10 +68,10 @@ export default function QuestionPage() {
       <div className='max-w-md mx-auto'>
         {/* Task Genie Question - Always Visible */}
         <div className='bg-white rounded-lg shadow-xl p-8 mb-8'>
-          <h1 className='text-3xl font-bold text-center text-gray-900 mb-8'>Interest in Task Genie</h1>
+          <h1 className='text-2xl font-bold text-center text-gray-900 mb-4'>Interest in Task Genie</h1>
 
           <div className='space-y-6'>
-            <p className='text-lg text-center text-gray-700 mb-8'>Would you use Task Genie for your work?</p>
+            <p className='text-md text-center text-gray-700 mb-6'>Would Task Genie be useful for your work?</p>
 
             <div className='space-y-4'>
               <button
@@ -101,7 +101,7 @@ export default function QuestionPage() {
 
         {/* Feedback Box */}
         <div className='bg-white rounded-lg shadow-xl p-8'>
-          <h2 className='text-2xl font-bold text-center text-gray-900 mb-6'>Your Feedback</h2>
+          <h2 className='text-2xl font-bold text-center text-gray-900 mb-4'>Your Feedback</h2>
 
           <div className='space-y-4'>
             <textarea
@@ -109,13 +109,13 @@ export default function QuestionPage() {
               onChange={(e) => setUserComment(e.target.value)}
               placeholder='Enter your feedback...'
               rows={6}
-              className='w-full px-4 py-3 text-lg rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none'
+              className='w-full px-4 py-3 text-md rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none'
             />
 
             <button
               onClick={handleMessageSubmit}
               disabled={!userComment.trim()}
-              className='w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-md shadow-sm text-lg font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed'
+              className='w-full flex justify-center items-center py-3 px-4 border border-transparent rounded-md shadow-sm text-md font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed'
             >
               <SendHorizontal className='w-5 h-5 mr-2' />
               Send Feedback
